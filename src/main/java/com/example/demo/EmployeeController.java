@@ -25,7 +25,7 @@ public class EmployeeController {
 
         employees.put(employee.getId(), employee);
 
-        return "Employee with ID: " + employee.getId() + " is added to the system.";
+        return "Employee with ID " + employee.getId() + " is added to the system.";
     }
 
     // Delete an employee
@@ -34,14 +34,18 @@ public class EmployeeController {
 
         employees.remove(id);
 
-        return "Employee with ID: " + id + " is deleted from the system.";
+        return "Employee with ID " + id + " is deleted from the system.";
     }
 
-    // Update an employee
+    // Update an employee, must provide a valid id in the request
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public String updateEmployee(@PathVariable Long id, @ModelAttribute Employee employee) {
 
         Employee original = employees.get(id);
+
+        if (original == null) {
+            return "Error: Employee with ID " + id + " does not exist.";
+        }
 
         if (employee.getName() != null) {
             original.setName(employee.getName());
@@ -57,7 +61,7 @@ public class EmployeeController {
 
         employees.put(id, original);
 
-        return "Employee with ID: " + id + " is updated.";
+        return "Employee with ID " + id + " is updated.";
     }
 
 }
